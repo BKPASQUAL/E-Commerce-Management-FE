@@ -5,22 +5,22 @@ import mockUsers from "../../assets/mocks/ProductMocks";
 const { Column, HeaderCell, Cell } = Table;
 const data = mockUsers(20);
 
-function ProductsTable() {
-  const [tableHeight, setTableHeight] = useState(700);
+function ProductsTable({tableHeight }) {
+  // const [tableHeight, setTableHeight] = useState(700);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-        setTableHeight(550);
-      } else {
-        setTableHeight(700);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+  //       setTableHeight(550);
+  //     } else {
+  //       setTableHeight(700);
+  //     }
+  //   };
 
-    handleResize(); 
-    window.addEventListener("resize", handleResize); 
-    return () => window.removeEventListener("resize", handleResize); 
-  }, []);
+  //   handleResize(); 
+  //   window.addEventListener("resize", handleResize); 
+  //   return () => window.removeEventListener("resize", handleResize); 
+  // }, []);
 
   return (
     <div>
