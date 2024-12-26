@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button } from "rsuite";
 import mockUsers from "../../assets/mocks/ProductMocks";
 
@@ -6,10 +6,26 @@ const { Column, HeaderCell, Cell } = Table;
 const data = mockUsers(20);
 
 function ProductsTable() {
+  const [tableHeight, setTableHeight] = useState(700);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        setTableHeight(550);
+      } else {
+        setTableHeight(700);
+      }
+    };
+
+    handleResize(); 
+    window.addEventListener("resize", handleResize); 
+    return () => window.removeEventListener("resize", handleResize); 
+  }, []);
+
   return (
     <div>
       <Table
-        height={700}
+        height={tableHeight}
         data={data}
         onRowClick={(rowData) => {
           console.log(rowData);
@@ -20,17 +36,20 @@ function ProductsTable() {
           <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
           <Cell dataKey="id" />
         </Column>
-
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">
-            Brand
+            Product Name
           </HeaderCell>
           <Cell dataKey="firstName" />
         </Column>
+        <Column flexGrow={2}>
+          <HeaderCell className="bg-gray-200 text-gray-700">Brand</HeaderCell>
+          <Cell dataKey="firstName" />
+        </Column>
 
-        <Column flexGrow={3}>
+        <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">
-            Product Name
+            Category
           </HeaderCell>
           <Cell dataKey="firstName" />
         </Column>

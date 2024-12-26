@@ -135,3 +135,46 @@
   margin-bottom: 30px;
   
 }
+
+
+/* Sidebar.css */
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .collapse-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1100;
+  }
+
+  .collapse-btn span {
+    font-size: 24px;
+    color: #000;
+  }
+
+  .sidebar-link {
+    padding: 10px;
+  }
+
+  .selected-menu-item {
+    font-weight: bold;
+  }
+}

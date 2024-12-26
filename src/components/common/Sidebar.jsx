@@ -4,9 +4,8 @@ import "../../assets/css/Sidebar.css";
 import { useNavigate } from "react-router-dom";
 
 function SidebarComp() {
-  const [collapsed, setCollapsed] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
-  const [theme, setTheme] = useState("light");
 
   const navigate = useNavigate();
 
@@ -15,26 +14,12 @@ function SidebarComp() {
     navigate(menuItem);
   };
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.body.setAttribute("data-theme", newTheme);
-  };
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    setTheme(savedTheme);
-    document.body.setAttribute("data-theme", savedTheme);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   return (
     <div className="sidebar-container">
       <Sidebar
-        collapsed={collapsed}
+        // collapsed={collapsed}
         width="200px"
         collapsedWidth="70px"
         transitionDuration={500}
