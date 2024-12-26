@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../common/Navbar";
 import ReactApexChart from "react-apexcharts";
 import ProductsTable from "../tables/ProductsTable";
+import HeroSection from "../dashbourd/HeroSection";
 
 function Dashboard() {
   const [tableHeight, setTableHeight] = useState(700);
@@ -46,8 +47,9 @@ function Dashboard() {
     <div>
       <Navbar title="Dashboard" />
       <div className="w-full px-4 md:px-10">
-        <div className="flex">
-          <div className="w-2/3">
+        <div className="flex h-76">
+          <div className="w-2/3 flex items-center">
+          <HeroSection/>
           </div>
           <div className="w-1/3">
             <ReactApexChart
