@@ -17,6 +17,11 @@ export const userApi = api.injectEndpoints({
       query: () => "users",
     }),
 
+    // Get all users Count
+    getUserCount: builder.query({
+        query: () => "users/userCount",
+      }),
+
     deleteUser: builder.mutation({
         query: (userId) => ({
           url: `users/${userId}`,
@@ -29,6 +34,7 @@ export const userApi = api.injectEndpoints({
 export const {
   useAddUserMutation,
   useGetAllUsersQuery,
+  useGetUserCountQuery ,
   useDeleteUserMutation,
 
 } = userApi;

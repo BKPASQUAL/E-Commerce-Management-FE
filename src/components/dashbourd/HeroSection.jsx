@@ -1,9 +1,12 @@
 import React from "react";
 import { FaUsers, FaBox, FaDollarSign } from "react-icons/fa"; // Import icons from react-icons
+import { useGetUserCountQuery } from "../../store/api/userApi";
 
 function HeroSection() {
+  const { data: userCount, isLoading, isError } = useGetUserCountQuery();
+
   const stats = [
-    { title: "Total Users", value: "20", icon: <FaUsers /> },
+    { title: "Total Users", value: isLoading ? "Loading..." : isError ? "Error" : userCount?.userCount || "N/A", icon: <FaUsers /> },
     { title: "Total Items", value: "15", icon: <FaBox /> },
     { title: "Total Customers", value: "1214", icon: <FaDollarSign /> },
   ];
@@ -17,7 +20,9 @@ function HeroSection() {
         >
           <div className="flex flex-col items-center">
             <div className="text-blue-500 text-5xl mb-4">{stat.icon}</div>
-            <h1 className="text-xl font-semibold text-gray-700">{stat.title}</h1>
+            <h1 className="text-xl font-semibold text-gray-700">
+              {stat.title}
+            </h1>
             <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
           </div>
         </div>

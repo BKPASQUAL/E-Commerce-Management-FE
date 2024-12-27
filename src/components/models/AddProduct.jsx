@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Modal, TextField } from "@mui/material";
+import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
@@ -40,12 +41,15 @@ const schema = yup.object().shape({
 });
 
 function AddProduct({ open, handleClose, productId }) {
+  const categoryOptions = ["Electronics", "Clothing", "Books", "Furniture"];
+  const brandOptions = ["Samsung", "Apple", "Nike", "Adidas"];
+
   const [fetchProductById, { data: getDataById }] =
     useLazyGetProductByIdQuery();
   const [fetchAllProducts] = useLazyGetAllProductsQuery();
   const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
-  const [fetchMinimumQty]  = useLazyGetMinimumQuantityQuery();
+  const [fetchMinimumQty] = useLazyGetMinimumQuantityQuery();
 
   const {
     control,
@@ -217,26 +221,38 @@ function AddProduct({ open, handleClose, productId }) {
               name="brand"
               control={control}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Brand"
-                  fullWidth
-                  error={!!errors.brand}
-                  helperText={errors.brand?.message}
-                />
+                <FormControl fullWidth error={!!errors.brand}>
+                  <InputLabel>Brand</InputLabel>
+                  <Select {...field} label="Brand">
+                    {brandOptions.map((brand, index) => (
+                      <MenuItem key={index} value={brand}>
+                        {brand}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <p style={{ color: "red", fontSize: "12px" }}>
+                    {errors.brand?.message}
+                  </p>
+                </FormControl>
               )}
             />
             <Controller
               name="category"
               control={control}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Category"
-                  fullWidth
-                  error={!!errors.category}
-                  helperText={errors.category?.message}
-                />
+                <FormControl fullWidth error={!!errors.category}>
+                  <InputLabel>Category</InputLabel>
+                  <Select {...field} label="Category">
+                    {categoryOptions.map((category, index) => (
+                      <MenuItem key={index} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <p style={{ color: "red", fontSize: "12px" }}>
+                    {errors.category?.message}
+                  </p>
+                </FormControl>
               )}
             />
             <Controller
@@ -294,7 +310,6 @@ function AddProduct({ open, handleClose, productId }) {
               type="submit"
               disabled={isAdding || isUpdating}
               className="bg-black p-2 rounded-lg w-100 text-white"
-
             >
               {isAdding || isUpdating ? "Saving..." : "Save"}
             </button>

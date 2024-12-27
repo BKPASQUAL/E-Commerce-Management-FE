@@ -4,10 +4,12 @@ import { Input, InputGroup, InputPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import UserTable from "../tables/UserTable";
 import AddUserModel from "../models/AddUserModel";
+import { useGetUserCountQuery } from "../../store/api/userApi";
 
 function Users() {
    const [tableHeight, setTableHeight] = useState(700);
    const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const{ data:userCount} = useGetUserCountQuery();
    
     useEffect(() => {
       const handleResize = () => {
@@ -34,7 +36,7 @@ function Users() {
   return (
     
     <>
-      <Navbar title="Users" />
+      <Navbar title="Users" count={userCount.userCount}/>
       <div className="px-4 md:px-10">
         <div className="flex flex-col md:flex-row md:justify-between mb-12 space-y-4 md:space-y-0">
           {/* Search Input */}
