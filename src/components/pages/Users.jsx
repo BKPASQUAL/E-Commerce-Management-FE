@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ProductsTable from "../tables/ProductsTable";
 import Navbar from "../common/Navbar";
 import { Input, InputGroup, InputPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
+import UserTable from "../tables/UserTable";
 
 function Users() {
    const [tableHeight, setTableHeight] = useState(700);
@@ -51,11 +51,11 @@ function Users() {
               <span className="material-symbols-outlined addcar-crossicon mr-1">
                 add
               </span>
-              Add Vehicle
+              Add User
             </button>
           </div>
         </div>
-        <ProductsTable tableHeight={tableHeight} />
+        <UserTable tableHeight={tableHeight} />
         </div>
     </>
   );

@@ -46,7 +46,7 @@ function Login() {
         });
         Toast.fire({
           icon: "success",
-          title: "Welcome to Cook!",
+          title: "Welcome to Dashbourd!",
         });
       } else {
         setErrorMessage(
