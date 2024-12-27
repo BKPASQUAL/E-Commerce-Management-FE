@@ -4,12 +4,12 @@ import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
 } from "../../store/api/userApi";
-// import AddUser from "../models/AddUser";
 import Swal from "sweetalert2";
+import AddUserModel from "../models/AddUserModel";
 
 const { Column, HeaderCell, Cell } = Table;
 
-function UserTable({ tableHeight , AddUser,}) {
+function UserTable({ tableHeight}) {
   const {
     data: getAllUsers,
     isLoading,
@@ -121,7 +121,7 @@ function UserTable({ tableHeight , AddUser,}) {
         </Column>
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">Role</HeaderCell>
-          <Cell dataKey="roleId" />
+          <Cell dataKey="role" />
         </Column>
         <Column flexGrow={1}>
           <HeaderCell>Action</HeaderCell>
@@ -150,7 +150,7 @@ function UserTable({ tableHeight , AddUser,}) {
       </Table>
 
       {isEditOpen && (
-        <AddUser
+        <AddUserModel
           open={isEditOpen}
           handleClose={handleCloseEdit}
           userId={selectedUserId}

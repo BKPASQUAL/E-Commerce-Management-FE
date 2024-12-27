@@ -3,10 +3,12 @@ import Navbar from "../common/Navbar";
 import { Input, InputGroup, InputPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import UserTable from "../tables/UserTable";
+import AddUserModel from "../models/AddUserModel";
 
 function Users() {
    const [tableHeight, setTableHeight] = useState(700);
-  
+   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+   
     useEffect(() => {
       const handleResize = () => {
         if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
@@ -20,7 +22,15 @@ function Users() {
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
-  
+
+    const handleOpenAddUserModal = () => {
+      setIsAddUserModalOpen(true);
+    };
+
+    const handleCloseAddUserModal = () => {
+      setIsAddUserModalOpen(false);
+    };
+
   return (
     
     <>
@@ -47,7 +57,10 @@ function Users() {
               />
             </div>
 
-            <button className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto">
+            <button 
+              onClick={handleOpenAddUserModal}
+              className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto"
+            >
               <span className="material-symbols-outlined addcar-crossicon mr-1">
                 add
               </span>
@@ -56,7 +69,18 @@ function Users() {
           </div>
         </div>
         <UserTable tableHeight={tableHeight} />
-        </div>
+      </div>
+
+      {/* Add User Modal */}
+      <AddUserModel 
+        open={isAddUserModalOpen} 
+        handleClose={handleCloseAddUserModal} 
+        userId={null} 
+        onSubmit={(data) => {
+          console.log("User Added: ", data);
+          handleCloseAddUserModal();
+        }}
+      />
     </>
   );
 }
