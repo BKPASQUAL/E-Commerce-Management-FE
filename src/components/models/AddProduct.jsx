@@ -3,6 +3,7 @@ import { Box, Modal, TextField, Divider } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useAddProductMutation } from "../../store/api/productApi";
 
 const style = {
   position: "absolute",
@@ -31,6 +32,8 @@ const schema = yup.object().shape({
 });
 
 function AddProduct({ open, handleClose }) {
+  const [addProduct, { isLoading, isError, isSuccess }] =
+    useAddProductMutation();
   const {
     control,
     handleSubmit,
@@ -49,10 +52,15 @@ function AddProduct({ open, handleClose }) {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Product Details Submitted:", data);
-    handleClose();
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const result = await addProduct(data).unwrap();
+      console.log("Product added successfully:", result);
+      reset(); // Reset form only on success
+      handleClose();
+    } catch (error) {
+      console.error("Failed to add product:", error);
+    }
   };
 
   return (
@@ -167,12 +175,17 @@ function AddProduct({ open, handleClose }) {
             </button>
             <button
               type="submit"
+              disabled={isLoading}
               className="bg-black text-white text-center"
             >
-              Save
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </form>
+        {isError && <p className="text-red-500">Failed to add product.</p>}
+        {isSuccess && (
+          <p className="text-green-500">Product added successfully.</p>
+        )}
       </Box>
     </Modal>
   );
