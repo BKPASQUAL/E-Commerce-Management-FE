@@ -12,7 +12,7 @@ export const productApi = api.injectEndpoints({
     }),
 
     getAllProducts: builder.query({
-      query: () => "product",
+      query: () => "products",
     }),
   }),
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Modal, TextField, Divider } from "@mui/material";
+import { Box, Modal, TextField, Divider, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,8 +17,8 @@ const style = {
 };
 
 const schema = yup.object().shape({
-  code: yup.string().required("Product Code is required"),
-  name: yup.string().required("Product Name is required"),
+  productCode: yup.string().required("Product Code is required"),
+  productName: yup.string().required("Product Name is required"),
   brand: yup.string().required("Brand is required"),
   category: yup.string().required("Category is required"),
   mrp: yup
@@ -42,8 +42,8 @@ function AddProduct({ open, handleClose }) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      code: "",
-      name: "",
+      productCode: "",
+      productName: "",
       brand: "",
       category: "",
       mrp: "",
@@ -54,8 +54,7 @@ function AddProduct({ open, handleClose }) {
 
   const onSubmit = async (data) => {
     try {
-      const result = await addProduct(data).unwrap();
-      console.log("Product added successfully:", result);
+      await addProduct(data).unwrap();
       reset(); // Reset form only on success
       handleClose();
     } catch (error) {
@@ -64,35 +63,40 @@ function AddProduct({ open, handleClose }) {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="add-product-modal"
+      aria-describedby="add-new-product-form"
+    >
       <Box sx={style}>
         <h2 className="text-center font-bold text-2xl">Add New Product</h2>
         <Divider className="p-2" />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-3 gap-y-4 mt-6">
             <Controller
-              name="code"
+              name="productCode"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Product Code"
                   fullWidth
-                  error={!!errors.code}
-                  helperText={errors.code?.message}
+                  error={!!errors.productCode}
+                  helperText={errors.productCode?.message}
                 />
               )}
             />
             <Controller
-              name="name"
+              name="productName"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Product Name"
                   fullWidth
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.productName}
+                  helperText={errors.productName?.message}
                 />
               )}
             />
@@ -166,20 +170,23 @@ function AddProduct({ open, handleClose }) {
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
-            <button
-              type="button"
+            <Button
               onClick={handleClose}
-              className="bg-red-500 text-white text-center h-10"
+              variant="contained"
+              color="error"
+              fullWidth
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
               disabled={isLoading}
-              className="bg-black text-white text-center"
             >
               {isLoading ? "Saving..." : "Save"}
-            </button>
+            </Button>
           </div>
         </form>
         {isError && <p className="text-red-500">Failed to add product.</p>}

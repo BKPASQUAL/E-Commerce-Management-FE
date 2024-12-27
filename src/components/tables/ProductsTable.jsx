@@ -1,32 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button } from "rsuite";
-import mockUsers from "../../assets/mocks/ProductMocks";
+import React from "react";
+import { Table } from "rsuite";
+import { useGetAllProductsQuery } from "../../store/api/productApi";
 
 const { Column, HeaderCell, Cell } = Table;
-const data = mockUsers(20);
 
-function ProductsTable({tableHeight }) {
-  // const [tableHeight, setTableHeight] = useState(700);
+function ProductsTable({ tableHeight }) {
+  const { data: getAllProducts, isLoading, isError } = useGetAllProductsQuery();
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-  //       setTableHeight(550);
-  //     } else {
-  //       setTableHeight(700);
-  //     }
-  //   };
+  // Safely handle the product data
+  const products = getAllProducts?.product || [];
 
-  //   handleResize(); 
-  //   window.addEventListener("resize", handleResize); 
-  //   return () => window.removeEventListener("resize", handleResize); 
-  // }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Failed to load products.</div>;
+  }
 
   return (
     <div>
       <Table
         height={tableHeight}
-        data={data}
+        data={products}
         onRowClick={(rowData) => {
           console.log(rowData);
         }}
@@ -34,36 +30,34 @@ function ProductsTable({tableHeight }) {
       >
         <Column flexGrow={1} align="center">
           <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
-          <Cell dataKey="id" />
+          <Cell dataKey="productCode" />
         </Column>
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">
             Product Name
           </HeaderCell>
-          <Cell dataKey="firstName" />
+          <Cell dataKey="productName" />
         </Column>
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">Brand</HeaderCell>
-          <Cell dataKey="firstName" />
+          <Cell dataKey="brand" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
-            Category
-          </HeaderCell>
-          <Cell dataKey="firstName" />
+          <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
+          <Cell dataKey="categoryId" />
         </Column>
 
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">MRP</HeaderCell>
-          <Cell dataKey="lastName" />
+          <Cell dataKey="mrp" />
         </Column>
 
         <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">
-            SELLING PRICE
+            Selling Price
           </HeaderCell>
-          <Cell dataKey="email" />
+          <Cell dataKey="sellingPrice" />
         </Column>
 
         <Column flexGrow={1}>
@@ -81,7 +75,7 @@ function ProductsTable({tableHeight }) {
                   className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteOpen(rowData.id);
+                    handleDeleteOpen(rowData._id);
                   }}
                 >
                   delete
