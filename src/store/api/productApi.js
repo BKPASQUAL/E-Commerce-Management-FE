@@ -43,12 +43,17 @@ export const productApi = api.injectEndpoints({
      getMinimumQuantity: builder.query({
       query: () => "products/minimumQuantity",
     }),
+
+    getProductCount: builder.query({
+      query: () => "products/count",
+    }),
   }),
 });
 
 export const {
   useAddProductMutation,
   useGetAllProductsQuery,
+  useGetProductCountQuery,
   useLazyGetAllProductsQuery, 
   useLazyGetProductByIdQuery, 
   useDeleteProductMutation,

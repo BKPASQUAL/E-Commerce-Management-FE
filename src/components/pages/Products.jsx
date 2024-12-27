@@ -4,10 +4,12 @@ import Navbar from "../common/Navbar";
 import { Input, InputGroup, InputPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import AddProduct from "../models/AddProduct";
+import { useGetProductCountQuery } from "../../store/api/productApi";
 
 function Products() {
   const [tableHeight, setTableHeight] = useState(700);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const { data: productCount } = useGetProductCountQuery();
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,8 +35,8 @@ function Products() {
 
   return (
     <>
-      <Navbar title="Products" />
-      <div className="px-4 md:px-10">
+    <Navbar title="Products" count={productCount?.count || 0} />
+    <div className="px-4 md:px-10">
         <div className="flex flex-col md:flex-row md:justify-between mb-12 space-y-4 md:space-y-0">
           {/* Search Input */}
           <div className="w-full md:w-auto">
