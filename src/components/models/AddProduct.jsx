@@ -1,9 +1,12 @@
-import React from "react";
-import { Box, Modal, TextField, Divider, Button } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Modal, TextField, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useAddProductMutation } from "../../store/api/productApi";
+import {
+  useAddProductMutation,
+  useGetProductByIdQuery,
+} from "../../store/api/productApi";
 
 const style = {
   position: "absolute",
@@ -23,17 +26,22 @@ const schema = yup.object().shape({
   category: yup.string().required("Category is required"),
   quantity: yup
     .number()
-    .typeError("quantity must be a number")
-    .required("quantity is required"),
+    .typeError("Quantity must be a number")
+    .required("Quantity is required"),
   sellingPrice: yup
     .number()
     .typeError("Selling Price must be a number")
     .required("Selling Price is required"),
 });
 
-function AddProduct({ open, handleClose }) {
+function AddProduct({ open, handleClose, productId }) {
+  const { data: getDataById } = useGetProductByIdQuery(productId, {
+    skip: !productId,
+  });
+
   const [addProduct, { isLoading, isError, isSuccess }] =
     useAddProductMutation();
+
   const {
     control,
     handleSubmit,
@@ -51,6 +59,20 @@ function AddProduct({ open, handleClose }) {
       description: "",
     },
   });
+
+  useEffect(() => {
+    if (getDataById?.product) {
+      reset({
+        productCode: getDataById.product.productCode || "",
+        productName: getDataById.product.productName || "",
+        brand: getDataById.product.brand || "",
+        category: getDataById.product.category || "",
+        quantity: getDataById.product.quantity || "",
+        sellingPrice: getDataById.product.sellingPrice || "",
+        description: getDataById.product.description || "",
+      });
+    }
+  }, [getDataById, reset]);
 
   const onSubmit = async (data) => {
     try {
@@ -70,8 +92,9 @@ function AddProduct({ open, handleClose }) {
       aria-describedby="add-new-product-form"
     >
       <Box sx={style}>
-        <h2 className="text-center font-bold text-2xl">Add New Product</h2>
-        <Divider className="p-2" />
+        <h2 className="text-center font-bold text-2xl">
+          {productId ? "Edit Product" : "Add New Product"}
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-3 gap-y-4 mt-6">
             <Controller

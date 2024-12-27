@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "rsuite";
 import { useGetAllProductsQuery } from "../../store/api/productApi";
+import AddProduct from "../models/AddProduct";
 
 const { Column, HeaderCell, Cell } = Table;
 
 function ProductsTable({ tableHeight }) {
   const { data: getAllProducts, isLoading, isError } = useGetAllProductsQuery();
 
-  // Safely handle the product data
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null); 
+
   const products = getAllProducts?.product || [];
+
+  const handleEditItem = (product) => {
+    setSelectedProductId(product._id); // Pass only the product ID
+    setIsEditOpen(true); 
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditOpen(false); 
+    setSelectedProductId(null); 
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,25 +57,17 @@ function ProductsTable({ tableHeight }) {
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
-            Category
-          </HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
           <Cell dataKey="categoryId" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
-            Quantity
-          </HeaderCell>
-          <Cell
-            dataKey="quantity"
-          />
+          <HeaderCell className="bg-gray-200 text-gray-700">Quantity</HeaderCell>
+          <Cell dataKey="quantity" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
-            Selling Price
-          </HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">Selling Price</HeaderCell>
           <Cell dataKey="sellingPrice" />
         </Column>
 
@@ -91,6 +96,14 @@ function ProductsTable({ tableHeight }) {
           </Cell>
         </Column>
       </Table>
+
+      {isEditOpen && (
+        <AddProduct
+          open={isEditOpen}
+          handleClose={handleCloseEdit}
+          productId={selectedProductId} // Pass only the ID
+        />
+      )}
     </div>
   );
 }
