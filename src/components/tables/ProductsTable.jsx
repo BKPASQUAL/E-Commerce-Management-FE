@@ -1,27 +1,36 @@
 import React, { useState } from "react";
 import { Table } from "rsuite";
-import { useDeleteProductMutation, useGetAllProductsQuery } from "../../store/api/productApi";
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+} from "../../store/api/productApi";
 import AddProduct from "../models/AddProduct";
 import Swal from "sweetalert2";
 
 const { Column, HeaderCell, Cell } = Table;
 
 function ProductsTable({ tableHeight }) {
-  const { data: getAllProducts, isLoading, isError , refetch} = useGetAllProductsQuery();
-  const [deleteProduct ] = useDeleteProductMutation();
+  const {
+    data: getAllProducts,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetAllProductsQuery();
+
+  const [deleteProduct] = useDeleteProductMutation();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState(null); 
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const products = getAllProducts?.product || [];
 
   const handleEditItem = (product) => {
-    setSelectedProductId(product._id); 
-    setIsEditOpen(true); 
+    setSelectedProductId(product._id);
+    setIsEditOpen(true);
   };
 
   const handleCloseEdit = () => {
-    setIsEditOpen(false); 
-    setSelectedProductId(null); 
+    setIsEditOpen(false);
+    setSelectedProductId(null);
   };
 
   if (isLoading) {
@@ -42,11 +51,11 @@ function ProductsTable({ tableHeight }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-  
+
     if (result.isConfirmed) {
       try {
-        const response = await deleteProduct(id).unwrap(); 
-        if (response ) {
+        const response = await deleteProduct(id).unwrap();
+        if (response) {
           Swal.fire({
             icon: "success",
             title: "Deleted!",
@@ -67,12 +76,14 @@ function ProductsTable({ tableHeight }) {
         Swal.fire({
           icon: "error",
           title: "Error Occurred",
-          text: error?.data?.payload || error.message || "Unable to delete Product. Please try again later.",
+          text:
+            error?.data?.payload ||
+            error.message ||
+            "Unable to delete Product. Please try again later.",
         });
       }
     }
   };
-  
 
   return (
     <div>
@@ -84,7 +95,7 @@ function ProductsTable({ tableHeight }) {
         }}
         style={{ width: "100%" }}
       >
-        <Column flexGrow={2} >
+        <Column flexGrow={2}>
           <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
           <Cell dataKey="productCode" />
         </Column>
@@ -100,21 +111,27 @@ function ProductsTable({ tableHeight }) {
         </Column>
 
         <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Category
+          </HeaderCell>
           <Cell dataKey="category" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Quantity</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Quantity
+          </HeaderCell>
           <Cell dataKey="quantity" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Selling Price</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Selling Price
+          </HeaderCell>
           <Cell dataKey="sellingPrice" />
         </Column>
 
-        <Column flexGrow={1}  >
+        <Column flexGrow={1}>
           <HeaderCell>Action</HeaderCell>
           <Cell>
             {(rowData) => (
@@ -144,7 +161,7 @@ function ProductsTable({ tableHeight }) {
         <AddProduct
           open={isEditOpen}
           handleClose={handleCloseEdit}
-          productId={selectedProductId} 
+          productId={selectedProductId}
         />
       )}
     </div>

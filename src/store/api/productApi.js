@@ -38,6 +38,11 @@ export const productApi = api.injectEndpoints({
         body: formData,
       }),
     }),
+
+     // Get all minimumQuantity 
+     getMinimumQuantity: builder.query({
+      query: () => "products/minimumQuantity",
+    }),
   }),
 });
 
@@ -48,4 +53,7 @@ export const {
   useLazyGetProductByIdQuery, 
   useDeleteProductMutation,
   useUpdateProductMutation,
+  useGetMinimumQuantityQuery,
+  useLazyGetMinimumQuantityQuery,
+
 } = productApi;

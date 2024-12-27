@@ -3,6 +3,7 @@ import Navbar from "../common/Navbar";
 import ReactApexChart from "react-apexcharts";
 import ProductsTable from "../tables/ProductsTable";
 import HeroSection from "../dashbourd/HeroSection";
+import MinimumQtyItems from "../dashbourd/MinimumQtyItems";
 
 function Dashboard() {
   const [tableHeight, setTableHeight] = useState(700);
@@ -49,7 +50,7 @@ function Dashboard() {
       <div className="w-full px-4 md:px-10">
         <div className="flex h-76">
           <div className="w-2/3 flex items-center">
-          <HeroSection/>
+            <HeroSection />
           </div>
           <div className="w-1/3">
             <ReactApexChart
@@ -62,12 +63,16 @@ function Dashboard() {
         </div>
         <div className="flex">
           <div className="w-2/3">
-            <h1>Products List</h1>
+            <h1 className="bg-white font-bold h-12 flex items-center justify-center">
+              Products List{" "}
+            </h1>
             <ProductsTable tableHeight={tableHeight} />
           </div>
           <div className="w-1/3">
-            <h1>Helo</h1>
-
+            <h1 className="ml-8 bg-white h-8 text-red-600 font-bold flex items-center justify-center">
+              Lowest Quntity Items
+            </h1>
+            <MinimumQtyItems />
           </div>
         </div>
       </div>

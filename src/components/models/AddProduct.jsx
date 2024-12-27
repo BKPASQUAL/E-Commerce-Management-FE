@@ -9,6 +9,7 @@ import {
   useUpdateProductMutation,
   useLazyGetProductByIdQuery,
   useLazyGetAllProductsQuery,
+  useLazyGetMinimumQuantityQuery,
 } from "../../store/api/productApi";
 
 const style = {
@@ -44,6 +45,7 @@ function AddProduct({ open, handleClose, productId }) {
   const [fetchAllProducts] = useLazyGetAllProductsQuery();
   const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [fetchMinimumQty]  = useLazyGetMinimumQuantityQuery();
 
   const {
     control,
@@ -113,6 +115,7 @@ function AddProduct({ open, handleClose, productId }) {
           icon: "success",
           title: response.message,
         });
+        fetchMinimumQty();
         fetchAllProducts();
       } else {
         throw new Error(response?.message || "Unexpected response format.");
@@ -148,6 +151,7 @@ function AddProduct({ open, handleClose, productId }) {
           icon: "success",
           title: response.message,
         });
+        fetchMinimumQty();
         fetchAllProducts();
       } else {
         throw new Error(response?.message || "Unexpected response format.");
