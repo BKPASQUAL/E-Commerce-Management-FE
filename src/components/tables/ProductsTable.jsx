@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Table } from "rsuite";
-import { useGetAllProductsQuery } from "../../store/api/productApi";
+import { useDeleteProductMutation, useGetAllProductsQuery } from "../../store/api/productApi";
 import AddProduct from "../models/AddProduct";
+import Swal from "sweetalert2";
 
 const { Column, HeaderCell, Cell } = Table;
 
 function ProductsTable({ tableHeight }) {
-  const { data: getAllProducts, isLoading, isError } = useGetAllProductsQuery();
-
+  const { data: getAllProducts, isLoading, isError , refetch} = useGetAllProductsQuery();
+  const [deleteProduct ] = useDeleteProductMutation();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null); 
 
@@ -30,6 +31,48 @@ function ProductsTable({ tableHeight }) {
   if (isError) {
     return <div>Failed to load products.</div>;
   }
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await deleteProduct(id).unwrap(); 
+        if (response ) {
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: response,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          refetch();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: response || "Something went wrong. Please try again.",
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error Occurred",
+          text: error?.data?.payload || error.message || "Unable to delete Product. Please try again later.",
+        });
+      }
+    }
+  };
+  
 
   return (
     <div>
@@ -86,7 +129,7 @@ function ProductsTable({ tableHeight }) {
                   className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer text-red-500	"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteOpen(rowData._id);
+                    handleDelete(rowData._id);
                   }}
                 >
                   delete

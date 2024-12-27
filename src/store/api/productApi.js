@@ -38,7 +38,6 @@ export const productApi = api.injectEndpoints({
         body: formData,
       }),
     }),
-    
   }),
 });
 

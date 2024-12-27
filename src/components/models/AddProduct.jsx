@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import * as yup from "yup";
 import {
   useAddProductMutation,
+  useGetAllProductsQuery,
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "../../store/api/productApi";
@@ -42,9 +43,12 @@ function AddProduct({ open, handleClose, productId }) {
   const { data: getDataById } = useGetProductByIdQuery(productId, {
     skip: !productId,
   });
-
-  const [addProduct] = useAddProductMutation();
-  const [updateProduct] = useUpdateProductMutation();
+  const { refetch: getAllProductRefetch } = useGetAllProductsQuery(undefined, {
+    skip: false, // Ensure the query always starts
+  });
+  
+  const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const {
     control,
@@ -88,49 +92,87 @@ function AddProduct({ open, handleClose, productId }) {
       toast.addEventListener("mouseenter", Swal.stopTimer);
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
+    
   });
+  
+  const safeRefetch = () => {
+    if (!isLoading && !isError && getAllProductRefetch) {
+      getAllProductRefetch();
+    }
+  };
 
-  const onSubmit = async (data) => {
+  const onAddProduct = async (data) => {
     try {
       handleClose();
-
       Swal.fire({
-        title: productId ? "Updating Product..." : "Adding Product...",
+        title: "Adding Product...",
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
         },
       });
 
-      let response;
-      if (productId) {
-        response = await updateProduct({
-          id: productId,
-          formData: data,
-        }).unwrap();
+      const response = await addProduct(data).unwrap();
+      if (response?.message === "Product added successfully") {
+        Swal.close();
+        Toast.fire({
+          icon: "success",
+          title: response.message,
+        });
+        getAllProductRefetch();
       } else {
-        response = await addProduct(data).unwrap();
+        throw new Error(response?.message || "Unexpected response format.");
       }
-
-      Swal.close();
-
-      Toast.fire({
-        icon: "success",
-        title: productId
-          ? "Product updated successfully!"
-          : "Product added successfully!",
-      });
-
-      reset();
     } catch (error) {
+      console.error("Error:", error);
       Swal.close();
+      const errorMessage = error?.data?.message || error?.message || "An error occurred. Please try again.";
       Swal.fire({
         icon: "error",
         title: "Error Occurred",
-        text: productId
-          ? "Failed to update product. Please try again later."
-          : "Failed to add product. Please try again later.",
+        text: errorMessage,
       });
+    }
+  };
+
+  const onUpdateProduct = async (data) => {
+    try {
+      handleClose();
+      Swal.fire({
+        title: "Updating Product...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const response = await updateProduct({ id: productId, formData: data }).unwrap();
+      if (response?.message === "Product updated successfully") {
+        Swal.close();
+        Toast.fire({
+          icon: "success",
+          title: response.message,
+        });
+      } else {
+        throw new Error(response?.message || "Unexpected response format.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Swal.close();
+      const errorMessage = error?.data?.message || error?.message || "An error occurred. Please try again.";
+      Swal.fire({
+        icon: "error",
+        title: "Error Occurred",
+        text: errorMessage,
+      });
+    }
+  };
+
+  const onSubmit = (data) => {
+    if (productId) {
+      onUpdateProduct(data);
+    } else {
+      onAddProduct(data);
     }
   };
 
@@ -245,20 +287,17 @@ function AddProduct({ open, handleClose, productId }) {
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button
               onClick={handleClose}
-              variant="contained"
+              disabled={isAdding || isUpdating}
               className="btn btn-danger w-100"
-              fullWidth
             >
               Cancel
             </button>
             <button
               type="submit"
-              variant="contained"
-              className="btn btn-dark w-100"
-
-              fullWidth
+              disabled={isAdding || isUpdating}
+              className={`btn ${isAdding || isUpdating ? "btn-secondary" : "btn-dark"} w-100`}
             >
-              Save
+              {isAdding || isUpdating ? "Saving..." : "Save"}
             </button>
           </div>
         </form>
