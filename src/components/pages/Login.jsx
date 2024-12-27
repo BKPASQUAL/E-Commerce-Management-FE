@@ -4,9 +4,12 @@ import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { FiMail, FiLock } from "react-icons/fi";
+import { useLoginUserMutation } from "../../store/api/authApi";
 
-function Login({ loginUser }) {
+function Login() {
   const navigate = useNavigate();
+  const [loginUser] = useLoginUserMutation();
+
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
