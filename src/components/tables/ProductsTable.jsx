@@ -44,13 +44,19 @@ function ProductsTable({ tableHeight }) {
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Category
+          </HeaderCell>
           <Cell dataKey="categoryId" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">MRP</HeaderCell>
-          <Cell dataKey="mrp" />
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Quantity
+          </HeaderCell>
+          <Cell
+            dataKey="quantity"
+          />
         </Column>
 
         <Column flexGrow={2}>

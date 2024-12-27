@@ -21,10 +21,10 @@ const schema = yup.object().shape({
   productName: yup.string().required("Product Name is required"),
   brand: yup.string().required("Brand is required"),
   category: yup.string().required("Category is required"),
-  mrp: yup
+  quantity: yup
     .number()
-    .typeError("MRP must be a number")
-    .required("MRP is required"),
+    .typeError("quantity must be a number")
+    .required("quantity is required"),
   sellingPrice: yup
     .number()
     .typeError("Selling Price must be a number")
@@ -46,7 +46,7 @@ function AddProduct({ open, handleClose }) {
       productName: "",
       brand: "",
       category: "",
-      mrp: "",
+      quantity: "",
       sellingPrice: "",
       description: "",
     },
@@ -127,15 +127,15 @@ function AddProduct({ open, handleClose }) {
               )}
             />
             <Controller
-              name="mrp"
+              name="quantity"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="MRP"
+                  label="Quantity"
                   fullWidth
-                  error={!!errors.mrp}
-                  helperText={errors.mrp?.message}
+                  error={!!errors.quantity}
+                  helperText={errors.quantity?.message}
                 />
               )}
             />
