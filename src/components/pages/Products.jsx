@@ -3,26 +3,35 @@ import ProductsTable from "../tables/ProductsTable";
 import Navbar from "../common/Navbar";
 import { Input, InputGroup, InputPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
+import AddProduct from "../models/AddProduct";
 
 function Products() {
-   const [tableHeight, setTableHeight] = useState(700);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-          setTableHeight(550);
-        } else {
-          setTableHeight(700);
-        }
-      };
-  
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
+  const [tableHeight, setTableHeight] = useState(700);
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        setTableHeight(550);
+      } else {
+        setTableHeight(700);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleOpenAddProduct = () => {
+    setIsAddProductOpen(true);
+  };
+
+  const handleCloseAddProduct = () => {
+    setIsAddProductOpen(false);
+  };
+
   return (
-    
     <>
       <Navbar title="Products" />
       <div className="px-4 md:px-10">
@@ -47,16 +56,20 @@ function Products() {
               />
             </div>
 
-            <button className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto">
+            <button
+              className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto"
+              onClick={handleOpenAddProduct}
+            >
               <span className="material-symbols-outlined addcar-crossicon mr-1">
                 add
               </span>
-              Add Vehicle
+              Add Product
             </button>
           </div>
         </div>
         <ProductsTable tableHeight={tableHeight} />
-        </div>
+      </div>
+      <AddProduct open={isAddProductOpen} handleClose={handleCloseAddProduct} />
     </>
   );
 }
