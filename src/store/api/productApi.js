@@ -12,12 +12,12 @@ export const productApi = api.injectEndpoints({
       }),
     }),
 
-    // Get all products
+    // Get all products (lazy query support)
     getAllProducts: builder.query({
       query: () => "products",
     }),
 
-    // Get a product by ID
+    // Get a product by ID (lazy query support)
     getProductById: builder.query({
       query: (id) => `products/${id}`,
     }),
@@ -44,7 +44,8 @@ export const productApi = api.injectEndpoints({
 export const {
   useAddProductMutation,
   useGetAllProductsQuery,
-  useGetProductByIdQuery,
+  useLazyGetAllProductsQuery, 
+  useLazyGetProductByIdQuery, 
   useDeleteProductMutation,
   useUpdateProductMutation,
 } = productApi;

@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
-import { Box, Modal, TextField, Button } from "@mui/material";
+import { Box, Modal, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 import {
   useAddProductMutation,
-  useGetAllProductsQuery,
-  useGetProductByIdQuery,
   useUpdateProductMutation,
+  useLazyGetProductByIdQuery,
+  useLazyGetAllProductsQuery,
 } from "../../store/api/productApi";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const style = {
   position: "absolute",
@@ -40,13 +39,9 @@ const schema = yup.object().shape({
 });
 
 function AddProduct({ open, handleClose, productId }) {
-  const { data: getDataById } = useGetProductByIdQuery(productId, {
-    skip: !productId,
-  });
-  const { refetch: getAllProductRefetch } = useGetAllProductsQuery(undefined, {
-    skip: false, // Ensure the query always starts
-  });
-  
+  const [fetchProductById, { data: getDataById }] =
+    useLazyGetProductByIdQuery();
+  const [fetchAllProducts] = useLazyGetAllProductsQuery();
   const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
@@ -67,6 +62,12 @@ function AddProduct({ open, handleClose, productId }) {
       description: "",
     },
   });
+
+  useEffect(() => {
+    if (productId) {
+      fetchProductById(productId);
+    }
+  }, [productId, fetchProductById]);
 
   useEffect(() => {
     if (getDataById?.product) {
@@ -92,14 +93,7 @@ function AddProduct({ open, handleClose, productId }) {
       toast.addEventListener("mouseenter", Swal.stopTimer);
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
-    
   });
-  
-  const safeRefetch = () => {
-    if (!isLoading && !isError && getAllProductRefetch) {
-      getAllProductRefetch();
-    }
-  };
 
   const onAddProduct = async (data) => {
     try {
@@ -119,18 +113,16 @@ function AddProduct({ open, handleClose, productId }) {
           icon: "success",
           title: response.message,
         });
-        getAllProductRefetch();
+        fetchAllProducts();
       } else {
         throw new Error(response?.message || "Unexpected response format.");
       }
     } catch (error) {
-      console.error("Error:", error);
       Swal.close();
-      const errorMessage = error?.data?.message || error?.message || "An error occurred. Please try again.";
       Swal.fire({
         icon: "error",
         title: "Error Occurred",
-        text: errorMessage,
+        text: error.message || "An error occurred. Please try again.",
       });
     }
   };
@@ -146,24 +138,26 @@ function AddProduct({ open, handleClose, productId }) {
         },
       });
 
-      const response = await updateProduct({ id: productId, formData: data }).unwrap();
+      const response = await updateProduct({
+        id: productId,
+        formData: data,
+      }).unwrap();
       if (response?.message === "Product updated successfully") {
         Swal.close();
         Toast.fire({
           icon: "success",
           title: response.message,
         });
+        fetchAllProducts();
       } else {
         throw new Error(response?.message || "Unexpected response format.");
       }
     } catch (error) {
-      console.error("Error:", error);
       Swal.close();
-      const errorMessage = error?.data?.message || error?.message || "An error occurred. Please try again.";
       Swal.fire({
         icon: "error",
         title: "Error Occurred",
-        text: errorMessage,
+        text: error.message || "An error occurred. Please try again.",
       });
     }
   };
@@ -288,14 +282,15 @@ function AddProduct({ open, handleClose, productId }) {
             <button
               onClick={handleClose}
               disabled={isAdding || isUpdating}
-              className="btn btn-danger w-100"
+              className="bg-red-700 p-2 rounded-lg w-100 text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isAdding || isUpdating}
-              className={`btn ${isAdding || isUpdating ? "btn-secondary" : "btn-dark"} w-100`}
+              className="bg-black p-2 rounded-lg w-100 text-white"
+
             >
               {isAdding || isUpdating ? "Saving..." : "Save"}
             </button>

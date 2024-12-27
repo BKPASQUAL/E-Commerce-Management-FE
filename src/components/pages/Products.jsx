@@ -57,7 +57,7 @@ function Products() {
             </div>
 
             <button
-              className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto"
+              className="bg-black text-white p-2 pl-4 pr-6 rounded flex items-center w-full md:w-auto "
               onClick={handleOpenAddProduct}
             >
               <span className="material-symbols-outlined addcar-crossicon mr-1">

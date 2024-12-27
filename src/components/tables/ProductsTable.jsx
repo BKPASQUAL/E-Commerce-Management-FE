@@ -84,7 +84,7 @@ function ProductsTable({ tableHeight }) {
         }}
         style={{ width: "100%" }}
       >
-        <Column flexGrow={2} align="center">
+        <Column flexGrow={2} >
           <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
           <Cell dataKey="productCode" />
         </Column>
@@ -114,7 +114,7 @@ function ProductsTable({ tableHeight }) {
           <Cell dataKey="sellingPrice" />
         </Column>
 
-        <Column flexGrow={1}>
+        <Column flexGrow={1}  >
           <HeaderCell>Action</HeaderCell>
           <Cell>
             {(rowData) => (
