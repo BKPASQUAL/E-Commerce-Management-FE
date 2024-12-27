@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { FiMail, FiLock } from "react-icons/fi";
 import { useLoginUserMutation } from "../../store/api/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth(); 
   const [loginUser] = useLoginUserMutation();
 
   const [errorMessage, setErrorMessage] = useState(null);
@@ -25,6 +27,7 @@ function Login() {
     try {
       const response = await loginUser(data).unwrap();
       if (response && response.token) {
+        login({ email: data.email, token: response.token }); 
         localStorage.setItem("accessToken", response.token);
         reset();
         navigate("/home");
