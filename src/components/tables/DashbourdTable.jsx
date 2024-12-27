@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 const { Column, HeaderCell, Cell } = Table;
 
-function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
+function DashbourdTable({ tableHeight }) {
   const {
     data: getAllProducts,
     isLoading,
@@ -23,16 +23,6 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
 
   const products = getAllProducts?.product || [];
 
-  // Filter and search products
-  const filteredProducts = products.filter((product) => {
-    const matchesSearchTerm =
-      product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "" || product.category === selectedCategory;
-    return matchesSearchTerm && matchesCategory;
-  });
-
   const handleEditItem = (product) => {
     setSelectedProductId(product._id);
     setIsEditOpen(true);
@@ -42,6 +32,14 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
     setIsEditOpen(false);
     setSelectedProductId(null);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Failed to load products.</div>;
+  }
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -87,19 +85,11 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Failed to load products.</div>;
-  }
-
   return (
     <div>
       <Table
         height={tableHeight}
-        data={filteredProducts}
+        data={products}
         onRowClick={(rowData) => {
           console.log(rowData);
         }}
@@ -115,10 +105,10 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
           </HeaderCell>
           <Cell dataKey="productName" />
         </Column>
-        <Column flexGrow={3}>
+        {/* <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">Brand</HeaderCell>
           <Cell dataKey="brand" />
-        </Column>
+        </Column> */}
 
         <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">
@@ -141,7 +131,7 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
           <Cell dataKey="sellingPrice" />
         </Column>
 
-        <Column flexGrow={1}>
+        {/* <Column flexGrow={1}>
           <HeaderCell>Action</HeaderCell>
           <Cell>
             {(rowData) => (
@@ -153,7 +143,7 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
                   edit
                 </span>
                 <span
-                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer text-red-500"
+                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer text-red-500	"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete(rowData._id);
@@ -164,7 +154,7 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
               </>
             )}
           </Cell>
-        </Column>
+        </Column> */}
       </Table>
 
       {isEditOpen && (
@@ -178,4 +168,4 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
   );
 }
 
-export default ProductsTable;
+export default DashbourdTable;

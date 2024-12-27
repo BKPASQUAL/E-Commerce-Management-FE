@@ -9,7 +9,17 @@ import { useGetProductCountQuery } from "../../store/api/productApi";
 function Products() {
   const [tableHeight, setTableHeight] = useState(700);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const { data: productCount } = useGetProductCountQuery();
+
+  const categoryOptions = [
+    { label: "All", value: "" },
+    { label: "Electronics", value: "Electronics" },
+    { label: "Clothing", value: "Clothing" },
+    { label: "Groceries", value: "Groceries" },
+    // Add more categories as needed
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,26 +45,33 @@ function Products() {
 
   return (
     <>
-    <Navbar title="Products" count={productCount?.count || 0} />
-    <div className="px-4 md:px-10">
+      <Navbar title="Products" count={productCount?.count || 0} />
+      <div className="px-4 md:px-10">
         <div className="flex flex-col md:flex-row md:justify-between mb-12 space-y-4 md:space-y-0">
           {/* Search Input */}
           <div className="w-full md:w-auto">
             <InputGroup inside style={{ width: "500px" }} size="lg">
-              <Input placeholder="Search Products By Name or Brand ..." />
+              <Input
+                placeholder="Search Products By Name or Brand ..."
+                value={searchTerm}
+                onChange={(value) => setSearchTerm(value)}
+              />
               <InputGroup.Button>
                 <SearchIcon />
               </InputGroup.Button>
             </InputGroup>
           </div>
 
-          {/* Brand Picker and Add Button */}
+          {/* Category Picker and Add Button */}
           <div className="flex flex-col md:flex-row md:items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6">
             <div className="w-full md:w-auto">
               <InputPicker
                 style={{ width: "100%", maxWidth: "250px" }}
                 size="lg"
-                placeholder="Select Brand"
+                placeholder="Select Category"
+                data={categoryOptions}
+                value={selectedCategory}
+                onChange={(value) => setSelectedCategory(value)}
               />
             </div>
 
@@ -69,7 +86,11 @@ function Products() {
             </button>
           </div>
         </div>
-        <ProductsTable tableHeight={tableHeight} />
+        <ProductsTable
+          tableHeight={tableHeight}
+          searchTerm={searchTerm}
+          selectedCategory={selectedCategory}
+        />
       </div>
       <AddProduct open={isAddProductOpen} handleClose={handleCloseAddProduct} />
     </>

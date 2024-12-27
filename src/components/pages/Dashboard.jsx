@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../common/Navbar";
 import ReactApexChart from "react-apexcharts";
-import ProductsTable from "../tables/ProductsTable";
 import HeroSection from "../dashbourd/HeroSection";
 import MinimumQtyItems from "../dashbourd/MinimumQtyItems";
+import DashbourdTable from "../tables/DashbourdTable";
 
 function Dashboard() {
   const [tableHeight, setTableHeight] = useState(700);
@@ -66,7 +66,7 @@ function Dashboard() {
             <h1 className="bg-white font-bold h-12 flex items-center justify-center">
               Products List{" "}
             </h1>
-            <ProductsTable tableHeight={tableHeight} />
+            <DashbourdTable tableHeight={tableHeight} />
           </div>
           <div className="w-1/3">
             <h1 className="ml-8 bg-white h-8 text-red-600 font-bold flex items-center justify-center">
