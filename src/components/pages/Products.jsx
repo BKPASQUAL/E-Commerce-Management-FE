@@ -65,14 +65,14 @@ function Products() {
           {/* Category Picker and Add Button */}
           <div className="flex flex-col md:flex-row md:items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6">
             <div className="w-full md:w-auto">
-              <InputPicker
+              {/* <InputPicker
                 style={{ width: "100%", maxWidth: "250px" }}
                 size="lg"
                 placeholder="Select Category"
                 data={categoryOptions}
                 value={selectedCategory}
                 onChange={(value) => setSelectedCategory(value)}
-              />
+              /> */}
             </div>
 
             <button

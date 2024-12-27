@@ -10,6 +10,7 @@ function Users() {
    const [tableHeight, setTableHeight] = useState(700);
    const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const{ data:userCount} = useGetUserCountQuery();
+  console.log("")
    
     useEffect(() => {
       const handleResize = () => {
@@ -36,7 +37,7 @@ function Users() {
   return (
     
     <>
-      <Navbar title="Users" count={userCount.userCount}/>
+      <Navbar title="Users" count={userCount?.userCount}/>
       <div className="px-4 md:px-10">
         <div className="flex flex-col md:flex-row md:justify-between mb-12 space-y-4 md:space-y-0">
           {/* Search Input */}
@@ -51,13 +52,13 @@ function Users() {
 
           {/* Brand Picker and Add Button */}
           <div className="flex flex-col md:flex-row md:items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6">
-            <div className="w-full md:w-auto">
+            {/* <div className="w-full md:w-auto">
               <InputPicker
                 style={{ width: "100%", maxWidth: "250px" }}
                 size="lg"
                 placeholder="Select Brand"
               />
-            </div>
+            </div> */}
 
             <button 
               onClick={handleOpenAddUserModal}
