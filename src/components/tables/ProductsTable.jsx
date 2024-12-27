@@ -14,7 +14,7 @@ function ProductsTable({ tableHeight }) {
   const products = getAllProducts?.product || [];
 
   const handleEditItem = (product) => {
-    setSelectedProductId(product._id); // Pass only the product ID
+    setSelectedProductId(product._id); 
     setIsEditOpen(true); 
   };
 
@@ -41,22 +41,22 @@ function ProductsTable({ tableHeight }) {
         }}
         style={{ width: "100%" }}
       >
-        <Column flexGrow={1} align="center">
+        <Column flexGrow={2} align="center">
           <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
           <Cell dataKey="productCode" />
         </Column>
-        <Column flexGrow={2}>
+        <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">
             Product Name
           </HeaderCell>
           <Cell dataKey="productName" />
         </Column>
-        <Column flexGrow={2}>
+        <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">Brand</HeaderCell>
           <Cell dataKey="brand" />
         </Column>
 
-        <Column flexGrow={2}>
+        <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
           <Cell dataKey="categoryId" />
         </Column>
@@ -101,7 +101,7 @@ function ProductsTable({ tableHeight }) {
         <AddProduct
           open={isEditOpen}
           handleClose={handleCloseEdit}
-          productId={selectedProductId} // Pass only the ID
+          productId={selectedProductId} 
         />
       )}
     </div>

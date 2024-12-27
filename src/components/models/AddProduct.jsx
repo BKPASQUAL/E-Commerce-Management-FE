@@ -6,6 +6,7 @@ import * as yup from "yup";
 import {
   useAddProductMutation,
   useGetProductByIdQuery,
+  useUpdateProductMutation,
 } from "../../store/api/productApi";
 
 const style = {
@@ -32,6 +33,7 @@ const schema = yup.object().shape({
     .number()
     .typeError("Selling Price must be a number")
     .required("Selling Price is required"),
+  description: yup.string().nullable(),
 });
 
 function AddProduct({ open, handleClose, productId }) {
@@ -39,8 +41,8 @@ function AddProduct({ open, handleClose, productId }) {
     skip: !productId,
   });
 
-  const [addProduct, { isLoading, isError, isSuccess }] =
-    useAddProductMutation();
+  const [addProduct, { isLoading: isAdding, isError: isAddError, isSuccess: isAddSuccess }] = useAddProductMutation();
+  const [updateProduct, { isLoading: isUpdating, isError: isUpdateError, isSuccess: isUpdateSuccess }] = useUpdateProductMutation();
 
   const {
     control,
@@ -76,14 +78,18 @@ function AddProduct({ open, handleClose, productId }) {
 
   const onSubmit = async (data) => {
     try {
-      await addProduct(data).unwrap();
-      reset(); // Reset form only on success
+      if (productId) {
+        await updateProduct({ id: productId, formData: data }).unwrap();
+      } else {
+        await addProduct(data).unwrap();
+      }
+      reset();
       handleClose();
     } catch (error) {
-      console.error("Failed to add product:", error);
+      console.error("Failed to save product:", error);
     }
   };
-
+  
   return (
     <Modal
       open={open}
@@ -206,15 +212,17 @@ function AddProduct({ open, handleClose, productId }) {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={isLoading}
+              disabled={isAdding || isUpdating}
             >
-              {isLoading ? "Saving..." : "Save"}
+              {isAdding || isUpdating ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>
-        {isError && <p className="text-red-500">Failed to add product.</p>}
-        {isSuccess && (
-          <p className="text-green-500">Product added successfully.</p>
+        {(isAddError || isUpdateError) && (
+          <p className="text-red-500">Failed to save product.</p>
+        )}
+        {(isAddSuccess || isUpdateSuccess) && (
+          <p className="text-green-500">Product saved successfully.</p>
         )}
       </Box>
     </Modal>
