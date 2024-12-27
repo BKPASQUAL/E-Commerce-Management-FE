@@ -58,7 +58,7 @@ function ProductsTable({ tableHeight }) {
 
         <Column flexGrow={3}>
           <HeaderCell className="bg-gray-200 text-gray-700">Category</HeaderCell>
-          <Cell dataKey="categoryId" />
+          <Cell dataKey="category" />
         </Column>
 
         <Column flexGrow={2}>
@@ -77,13 +77,13 @@ function ProductsTable({ tableHeight }) {
             {(rowData) => (
               <>
                 <span
-                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-txtdarkblue mr-3 cursor-pointer"
+                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-txtdarkblue mr-3 cursor-pointer text-blue-500"
                   onClick={() => handleEditItem(rowData)}
                 >
                   edit
                 </span>
                 <span
-                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer"
+                  className="material-symbols-outlined sidebar-icon text-lg font-medium text-red mr-3 cursor-pointer text-red-500	"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteOpen(rowData._id);

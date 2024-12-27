@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { Box, Modal, TextField, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Swal from "sweetalert2";
 import * as yup from "yup";
 import {
   useAddProductMutation,
   useGetProductByIdQuery,
   useUpdateProductMutation,
 } from "../../store/api/productApi";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const style = {
   position: "absolute",
@@ -41,8 +43,8 @@ function AddProduct({ open, handleClose, productId }) {
     skip: !productId,
   });
 
-  const [addProduct, { isLoading: isAdding, isError: isAddError, isSuccess: isAddSuccess }] = useAddProductMutation();
-  const [updateProduct, { isLoading: isUpdating, isError: isUpdateError, isSuccess: isUpdateSuccess }] = useUpdateProductMutation();
+  const [addProduct] = useAddProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
 
   const {
     control,
@@ -76,20 +78,62 @@ function AddProduct({ open, handleClose, productId }) {
     }
   }, [getDataById, reset]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const onSubmit = async (data) => {
     try {
-      if (productId) {
-        await updateProduct({ id: productId, formData: data }).unwrap();
-      } else {
-        await addProduct(data).unwrap();
-      }
-      reset();
       handleClose();
+
+      Swal.fire({
+        title: productId ? "Updating Product..." : "Adding Product...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      let response;
+      if (productId) {
+        response = await updateProduct({
+          id: productId,
+          formData: data,
+        }).unwrap();
+      } else {
+        response = await addProduct(data).unwrap();
+      }
+
+      Swal.close();
+
+      Toast.fire({
+        icon: "success",
+        title: productId
+          ? "Product updated successfully!"
+          : "Product added successfully!",
+      });
+
+      reset();
     } catch (error) {
-      console.error("Failed to save product:", error);
+      Swal.close();
+      Swal.fire({
+        icon: "error",
+        title: "Error Occurred",
+        text: productId
+          ? "Failed to update product. Please try again later."
+          : "Failed to add product. Please try again later.",
+      });
     }
   };
-  
+
   return (
     <Modal
       open={open}
@@ -199,31 +243,25 @@ function AddProduct({ open, handleClose, productId }) {
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
-            <Button
+            <button
               onClick={handleClose}
               variant="contained"
-              color="error"
+              className="btn btn-danger w-100"
               fullWidth
             >
               Cancel
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               variant="contained"
-              color="primary"
+              className="btn btn-dark w-100"
+
               fullWidth
-              disabled={isAdding || isUpdating}
             >
-              {isAdding || isUpdating ? "Saving..." : "Save"}
-            </Button>
+              Save
+            </button>
           </div>
         </form>
-        {(isAddError || isUpdateError) && (
-          <p className="text-red-500">Failed to save product.</p>
-        )}
-        {(isAddSuccess || isUpdateSuccess) && (
-          <p className="text-green-500">Product saved successfully.</p>
-        )}
       </Box>
     </Modal>
   );
