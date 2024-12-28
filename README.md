@@ -1,4 +1,4 @@
-Here’s an updated version of the README with the hosted link included:
+Here's the updated README with the login credentials included:
 
 ---
 
@@ -47,10 +47,15 @@ npm run dev
 The application is hosted online for public access. Use the following link to visit it:
 [**Hosted Application**](https://e-commerce-management-fe.vercel.app)
 
-Replace `e-commerce-management-fe.vercel.app` with the actual hosted link (e.g., `e-commerce-management-fe.vercel.app`).
-
 #### 6. Access the Local Application
 If running locally, check the terminal for the URL or port where the server is running (e.g., `http://localhost:3000`).
+
+### Login Credentials
+
+To log in to the application, use the following credentials:
+
+- **Email**: `admin@gmail.com`  
+- **Password**: `000000`
 
 ### Additional Commands
 
@@ -73,6 +78,6 @@ If you encounter issues during setup, ensure that:
 
 - All prerequisites are installed correctly.
 - The repository URL is correct.
-- The terminal/command prompt has the necessary permissions.
+- The terminal/command prompt has the necessary permissions. 
 
 
