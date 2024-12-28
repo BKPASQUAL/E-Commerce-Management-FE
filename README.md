@@ -45,7 +45,7 @@ npm run dev
 
 #### 5. Access the Hosted Application
 The application is hosted online for public access. Use the following link to visit it:
-[**Hosted Application**](e-commerce-management-fe.vercel.app`)
+[**Hosted Application**](https://e-commerce-management-fe.vercel.app)
 
 Replace `e-commerce-management-fe.vercel.app` with the actual hosted link (e.g., `e-commerce-management-fe.vercel.app`).
 
