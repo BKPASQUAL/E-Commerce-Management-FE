@@ -47,7 +47,7 @@ npm run dev
 The application is hosted online for public access. Use the following link to visit it:
 [**Hosted Application**](<Insert_Hosted_Link_Here>)
 
-Replace `<Insert_Hosted_Link_Here>` with the actual hosted link (e.g., `e-commerce-management-fe.vercel.app`).
+Replace `e-commerce-management-fe.vercel.app` with the actual hosted link (e.g., `e-commerce-management-fe.vercel.app`).
 
 #### 6. Access the Local Application
 If running locally, check the terminal for the URL or port where the server is running (e.g., `http://localhost:3000`).
