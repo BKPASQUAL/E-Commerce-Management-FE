@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import * as yup from "yup";
-import { useAddUserMutation } from "../../store/api/userApi";
+import { useAddUserMutation, useGetAllUsersQuery, useGetUserCountQuery } from "../../store/api/userApi";
 
 const style = {
   position: "absolute",
@@ -33,7 +33,8 @@ const schema = yup.object().shape({
 
 function AddUserModel({ open, handleClose, userId, onSubmit }) {
   const [addUser] = useAddUserMutation(); 
-
+  const {refetch:getAllUserRefetch} = useGetAllUsersQuery();
+  const {refetch:getCountRefetch} = useGetUserCountQuery();
   const {
     control,
     handleSubmit,
@@ -71,9 +72,11 @@ function AddUserModel({ open, handleClose, userId, onSubmit }) {
         title: userId ? "User updated successfully" : "User added successfully",
       });
 
-      if (onSubmit) onSubmit(response); // Trigger parent callback
-      reset(); // Reset the form
-      handleClose(); // Close the modal
+      if (onSubmit) onSubmit(response); 
+      reset(); 
+      handleClose(); 
+      getAllUserRefetch();
+      getCountRefetch();
     } catch (error) {
       Swal.close();
       Swal.fire({

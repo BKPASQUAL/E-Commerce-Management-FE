@@ -3,6 +3,8 @@ import { Table } from "rsuite";
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
+  useGetMinimumQuantityQuery,
+  useGetProductCountQuery,
 } from "../../store/api/productApi";
 import AddProduct from "../models/AddProduct";
 import Swal from "sweetalert2";
@@ -22,7 +24,9 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
   const [selectedProductId, setSelectedProductId] = useState(null);
 
   const products = getAllProducts?.product || [];
-
+  const {refetch:productCountRefeych} = useGetProductCountQuery();
+  const {refetch:minimumQtyRefetch} = useGetMinimumQuantityQuery();
+  
   // Filter and search products
   const filteredProducts = products.filter((product) => {
     const matchesSearchTerm =
@@ -66,6 +70,8 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
             timer: 1000,
           });
           refetch();
+          productCountRefeych();
+          minimumQtyRefetch();
         } else {
           Swal.fire({
             icon: "error",

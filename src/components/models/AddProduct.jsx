@@ -11,6 +11,7 @@ import {
   useLazyGetProductByIdQuery,
   useLazyGetAllProductsQuery,
   useLazyGetMinimumQuantityQuery,
+  useGetProductCountQuery,
 } from "../../store/api/productApi";
 
 const style = {
@@ -50,6 +51,7 @@ function AddProduct({ open, handleClose, productId }) {
   const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
   const [fetchMinimumQty] = useLazyGetMinimumQuantityQuery();
+  const {refetch:productCountRefeych} = useGetProductCountQuery();
 
   const {
     control,
@@ -119,8 +121,10 @@ function AddProduct({ open, handleClose, productId }) {
           icon: "success",
           title: response.message,
         });
+        reset();
         fetchMinimumQty();
         fetchAllProducts();
+        productCountRefeych();
       } else {
         throw new Error(response?.message || "Unexpected response format.");
       }
