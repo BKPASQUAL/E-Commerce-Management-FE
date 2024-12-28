@@ -75,8 +75,4 @@ If you encounter issues during setup, ensure that:
 - The repository URL is correct.
 - The terminal/command prompt has the necessary permissions.
 
-Feel free to contact the repository maintainer if the issue persists.
 
----
-
-Let me know the hosted link so I can update it directly!
