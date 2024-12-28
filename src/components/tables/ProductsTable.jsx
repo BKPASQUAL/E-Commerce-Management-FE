@@ -65,7 +65,7 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
           Swal.fire({
             icon: "success",
             title: "Deleted!",
-            text: response,
+            text: response.message,
             showConfirmButton: false,
             timer: 1000,
           });
