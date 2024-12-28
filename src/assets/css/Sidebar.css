@@ -69,12 +69,25 @@
   height: 100vh !important;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* justify-content: space-between; */
+  justify-content: flex-start; /* Content stays at the top initially */
   align-items: center;
 }
 
+.sidebar-log {
+  margin-top: 30px;
+}
+
+.sidebar-link {
+  width: 100%; /* Ensure links stretch to fill container */
+}
+
+.sidebar {
+  flex-grow: 1; /* Allows the middle section to take available space */
+  width: 100%; /* Sidebar occupies the full width */
+}
+
 .sidebar-logout {
+  margin: 0; /* Remove default margin */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,14 +96,15 @@
   cursor: pointer;
   width: 100%;
   height: 60px;
-  position: relative;
+  position: absolute; /* Fix it to the bottom */
+  bottom: 0; /* Position at the bottom of the container */
+  left: 0;
   overflow: hidden;
+  background-color: white;
 }
 
-.sidebar-logout-icon {
-  color: #000;
-  font-weight: 600;
-  margin-right: 15px;
+.sidebar-logout:hover {
+  color: #ffffff;
 }
 
 .sidebar-logout::before {
@@ -109,18 +123,15 @@
   width: 100%;
 }
 
-.sidebar-logout:hover {
-  color: #ffffff;
-
-  .sidebar-logout-icon {
-    color: #fff;
-  }
+.sidebar-logout-icon {
+  margin-right: 15px;
+  z-index: 1;
+  color: #000;
 }
 
-.sidebar-logout p,
-.sidebar-logout .sidebar-logout-icon {
+.sidebar-logout p {
   z-index: 1;
-  position: relative;
+  margin: 0;
 }
 
 .sidebar-log {
@@ -133,12 +144,10 @@
   margin-top: 30px;
   border-radius: 50px;
   margin-bottom: 30px;
-  
 }
 
-
 /* Sidebar.css */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .sidebar-container {
     width: 100%;
     position: fixed;
@@ -177,4 +186,4 @@
   .selected-menu-item {
     font-weight: bold;
   }
-}
+} */

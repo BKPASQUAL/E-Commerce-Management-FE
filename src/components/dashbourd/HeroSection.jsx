@@ -26,7 +26,7 @@ function HeroSection() {
   ];
 
   return (
-    <div className="flex flex-row flex-wrap justify-center space-x-6">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 ">
       {stats.map((stat, index) => (
         <div
           key={index}
