@@ -101,36 +101,36 @@ function DashbourdTable({ tableHeight }) {
         style={{ width: "100%" }}
       >
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Code</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Code</HeaderCell>
           <Cell dataKey="productCode" />
         </Column>
         <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Product Name
           </HeaderCell>
           <Cell dataKey="productName" />
         </Column>
         {/* <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Brand</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Brand</HeaderCell>
           <Cell dataKey="brand" />
         </Column> */}
 
         <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Category
           </HeaderCell>
           <Cell dataKey="category" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Quantity
           </HeaderCell>
           <Cell dataKey="quantity" />
         </Column>
 
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Selling Price
           </HeaderCell>
           <Cell dataKey="sellingPrice" />

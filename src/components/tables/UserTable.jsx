@@ -101,39 +101,39 @@ function UserTable({ tableHeight }) {
         style={{ width: "100%" }}
       >
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Name</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Name</HeaderCell>
           <Cell dataKey="name" />
         </Column>
         <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Email</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Email</HeaderCell>
           <Cell dataKey="email" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Contact No
           </HeaderCell>
           <Cell dataKey="contactNo" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Gender</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Gender</HeaderCell>
           <Cell dataKey="gender" />
         </Column>
         <Column flexGrow={3}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Address</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Address</HeaderCell>
           <Cell dataKey="address" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>
             Username
           </HeaderCell>
           <Cell dataKey="username" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Role</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Role</HeaderCell>
           <Cell dataKey="role" />
         </Column>
         <Column flexGrow={1}>
-          <HeaderCell>Action</HeaderCell>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Action</HeaderCell>
           <Cell>
             {(rowData) => (
               <>
