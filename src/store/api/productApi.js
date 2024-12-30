@@ -55,6 +55,7 @@ export const {
   useGetAllProductsQuery,
   useGetProductCountQuery,
   useLazyGetAllProductsQuery, 
+  useGetProductByIdQuery, 
   useLazyGetProductByIdQuery, 
   useDeleteProductMutation,
   useUpdateProductMutation,

@@ -136,8 +136,8 @@ function DashbourdTable({ tableHeight }) {
           <Cell dataKey="sellingPrice" />
         </Column>
 
-        {/* <Column flexGrow={1}>
-          <HeaderCell>Action</HeaderCell>
+        <Column flexGrow={1}>
+          <HeaderCell style={{backgroundColor:"#D9EAFD"}}>Action</HeaderCell>
           <Cell>
             {(rowData) => (
               <>
@@ -159,7 +159,7 @@ function DashbourdTable({ tableHeight }) {
               </>
             )}
           </Cell>
-        </Column> */}
+        </Column>
       </Table>
 
       {isEditOpen && (

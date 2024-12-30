@@ -4,9 +4,11 @@ import ReactApexChart from "react-apexcharts";
 import HeroSection from "../dashbourd/HeroSection";
 import MinimumQtyItems from "../dashbourd/MinimumQtyItems";
 import DashbourdTable from "../tables/DashbourdTable";
+import AddProduct from "../models/AddProduct";
 
 function Dashboard() {
   const [tableHeight, setTableHeight] = useState(700);
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,6 +46,14 @@ function Dashboard() {
     ],
   };
 
+  const handleOpenAddProduct = () => {
+    setIsAddProductOpen(true);
+  };
+
+  const handleCloseAddProduct = () => {
+    setIsAddProductOpen(false);
+  };
+
   return (
     <div>
       <Navbar title="Dashboard" />
@@ -63,9 +73,22 @@ function Dashboard() {
         </div>
         <div className="flex">
           <div className="w-2/3">
-            <h1 className="bg-white font-bold h-12 flex items-center justify-center">
-              Products List{" "}
-            </h1>
+            <div className="flex ">
+              <div className="w-11/12">
+                <h1 className="bg-white font-bold h-12 flex items-center justify-center">
+                  Products List
+                </h1>
+              </div>
+              <div className="w-1/12 bg-white flex items-center justify-center cursor-pointer">
+                <span
+                  class="material-symbols-outlined"
+                  onClick={handleOpenAddProduct}
+                >
+                  add_circle
+                </span>
+              </div>
+            </div>
+
             <DashbourdTable tableHeight={tableHeight} />
           </div>
           <div className="w-1/3">
@@ -76,6 +99,8 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <AddProduct open={isAddProductOpen} handleClose={handleCloseAddProduct} />
+
     </div>
   );
 }

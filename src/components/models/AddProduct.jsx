@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Modal, TextField } from "@mui/material";
+import { Box, CircularProgress, Modal, TextField } from "@mui/material";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,7 @@ import {
   useLazyGetAllProductsQuery,
   useLazyGetMinimumQuantityQuery,
   useGetProductCountQuery,
+  useGetProductByIdQuery,
 } from "../../store/api/productApi";
 
 const style = {
@@ -44,14 +45,20 @@ const schema = yup.object().shape({
 function AddProduct({ open, handleClose, productId }) {
   const categoryOptions = ["Electronics", "Clothing", "Books", "Furniture"];
   const brandOptions = ["Samsung", "Apple", "Nike", "Adidas"];
-
+  const {
+    data: fetchProductDataById,
+    isLoading,
+    isError,
+  } = useGetProductByIdQuery(productId, {
+    skip: !productId, 
+  });
   const [fetchProductById, { data: getDataById }] =
     useLazyGetProductByIdQuery();
   const [fetchAllProducts] = useLazyGetAllProductsQuery();
   const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
   const [fetchMinimumQty] = useLazyGetMinimumQuantityQuery();
-  const {refetch:productCountRefeych} = useGetProductCountQuery();
+  const { refetch: productCountRefeych } = useGetProductCountQuery();
 
   const {
     control,
@@ -78,18 +85,18 @@ function AddProduct({ open, handleClose, productId }) {
   }, [productId, fetchProductById]);
 
   useEffect(() => {
-    if (getDataById?.product) {
+    if (fetchProductDataById?.product) {
       reset({
-        productCode: getDataById.product.productCode || "",
-        productName: getDataById.product.productName || "",
-        brand: getDataById.product.brand || "",
-        category: getDataById.product.category || "",
-        quantity: getDataById.product.quantity || "",
-        sellingPrice: getDataById.product.sellingPrice || "",
-        description: getDataById.product.description || "",
+        productCode: fetchProductDataById.product.productCode || "",
+        productName: fetchProductDataById.product.productName || "",
+        brand: fetchProductDataById.product.brand || "",
+        category: fetchProductDataById.product.category || "",
+        quantity: fetchProductDataById.product.quantity || "",
+        sellingPrice: fetchProductDataById.product.sellingPrice || "",
+        description: fetchProductDataById.product.description || "",
       });
     }
-  }, [getDataById, reset]);
+  }, [fetchProductDataById, reset]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -181,6 +188,16 @@ function AddProduct({ open, handleClose, productId }) {
       onAddProduct(data);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style} className="flex justify-center items-center h-96">
+          <CircularProgress />
+        </Box>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
