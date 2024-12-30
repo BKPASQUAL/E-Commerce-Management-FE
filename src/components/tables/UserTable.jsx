@@ -6,10 +6,11 @@ import {
 } from "../../store/api/userApi";
 import Swal from "sweetalert2";
 import AddUserModel from "../models/AddUserModel";
+import { CircularProgress } from "@mui/material";
 
 const { Column, HeaderCell, Cell } = Table;
 
-function UserTable({ tableHeight}) {
+function UserTable({ tableHeight }) {
   const {
     data: getAllUsers,
     isLoading,
@@ -34,7 +35,11 @@ function UserTable({ tableHeight}) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+        <div className="flex justify-center items-center h-96">
+          <CircularProgress />
+        </div>
+    );
   }
 
   if (isError) {
@@ -104,7 +109,9 @@ function UserTable({ tableHeight}) {
           <Cell dataKey="email" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Contact No</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Contact No
+          </HeaderCell>
           <Cell dataKey="contactNo" />
         </Column>
         <Column flexGrow={2}>
@@ -116,7 +123,9 @@ function UserTable({ tableHeight}) {
           <Cell dataKey="address" />
         </Column>
         <Column flexGrow={2}>
-          <HeaderCell className="bg-gray-200 text-gray-700">Username</HeaderCell>
+          <HeaderCell className="bg-gray-200 text-gray-700">
+            Username
+          </HeaderCell>
           <Cell dataKey="username" />
         </Column>
         <Column flexGrow={2}>

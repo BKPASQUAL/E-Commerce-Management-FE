@@ -8,6 +8,7 @@ import {
 } from "../../store/api/productApi";
 import AddProduct from "../models/AddProduct";
 import Swal from "sweetalert2";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -24,9 +25,9 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
   const [selectedProductId, setSelectedProductId] = useState(null);
 
   const products = getAllProducts?.product || [];
-  const {refetch:productCountRefeych} = useGetProductCountQuery();
-  const {refetch:minimumQtyRefetch} = useGetMinimumQuantityQuery();
-  
+  const { refetch: productCountRefeych } = useGetProductCountQuery();
+  const { refetch: minimumQtyRefetch } = useGetMinimumQuantityQuery();
+
   // Filter and search products
   const filteredProducts = products.filter((product) => {
     const matchesSearchTerm =
@@ -94,7 +95,11 @@ function ProductsTable({ tableHeight, searchTerm, selectedCategory }) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-96">
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (isError) {

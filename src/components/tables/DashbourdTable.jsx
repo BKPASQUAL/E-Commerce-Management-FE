@@ -6,6 +6,7 @@ import {
 } from "../../store/api/productApi";
 import AddProduct from "../models/AddProduct";
 import Swal from "sweetalert2";
+import { CircularProgress } from "@mui/material";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -34,7 +35,11 @@ function DashbourdTable({ tableHeight }) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+        <div className="flex justify-center items-center h-96">
+          <CircularProgress />
+        </div>
+    );
   }
 
   if (isError) {

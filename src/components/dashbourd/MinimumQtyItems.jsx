@@ -1,22 +1,28 @@
 import React from "react";
 import { useGetMinimumQuantityQuery } from "../../store/api/productApi";
+import { CircularProgress } from "@mui/material";
 
 function MinimumQtyItems() {
   const { data, isLoading, error } = useGetMinimumQuantityQuery();
 
-  console.log(data?.products,"sdds"); 
+  console.log(data?.products, "sdds");
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-96">
+        <CircularProgress />
+      </div>
+    );
   if (error) return <div>Error: {error.message}</div>;
 
-  const items = Array.isArray(data) ? data : data?.products || []; 
+  const items = Array.isArray(data) ? data : data?.products || [];
 
   return (
     <div className="ml-8 bg-white ">
       <div className="p-4 ">
         {items.map((item) => (
           <div
-            key={item.id} 
+            key={item.id}
             className="w-full bg-slate-200 h-16 flex justify-between mb-4"
           >
             <div className="p-2 px-6">
